@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_money_management_app/db/functions/transaction/transaction_db.dart';
 import 'package:flutter_money_management_app/db/models/category/category_model.dart';
 import 'package:flutter_money_management_app/db/models/transaction/transaction_model.dart';
+import 'package:flutter_money_management_app/utils/helper_functions.dart';
 import 'package:intl/intl.dart';
 
 class ScreenTransactions extends StatelessWidget {
@@ -25,8 +26,10 @@ class ScreenTransactions extends StatelessWidget {
                       height: 50.0, // Adjust height as needed
                       decoration: BoxDecoration(
                         color: (transaction.categoryType == CategoryType.income)
-      ? Color.fromARGB(255, 75, 160, 78) // Color for income
-      : Colors.red, // Color for expense, // Adjust color as needed
+                            ? const Color.fromARGB(
+                                255, 75, 160, 78) // Color for income
+                            : Colors
+                                .red, // Color for expense, // Adjust color as needed
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Center(
@@ -37,10 +40,11 @@ class ScreenTransactions extends StatelessWidget {
                         ),
                       ),
                     ),
-                    title: Text('Rs ${transaction.amount}'),
-                    subtitle: (transaction.categoryType == CategoryType.income)
-                        ? const Text('Income')
-                        : const Text('Expense'),
+                    title: Text('\u20B9 ${transaction.amount}'),
+                    subtitle: Text(
+                      HelperFunction.firstLetterCapitalize(transaction.categoryModel.name),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     trailing: IconButton(
                         onPressed: () {
                           TransactionDb().deleteTransaction(
@@ -67,4 +71,6 @@ class ScreenTransactions extends StatelessWidget {
   String formatDate(DateTime date) {
     return DateFormat.MMMd().format(date);
   }
+
+  
 }

@@ -3,6 +3,7 @@ import 'package:flutter_money_management_app/db/functions/category/category_db.d
 import 'package:flutter_money_management_app/db/functions/transaction/transaction_db.dart';
 import 'package:flutter_money_management_app/db/models/category/category_model.dart';
 import 'package:flutter_money_management_app/db/models/transaction/transaction_model.dart';
+import 'package:flutter_money_management_app/utils/helper_functions.dart';
 import 'package:intl/intl.dart';
 
 class ScreenAddTransactions extends StatefulWidget {
@@ -39,10 +40,15 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Transactions'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //Form
@@ -80,6 +86,7 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             hintText: 'Amount',
+                            prefixText: '\u20B9 ',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0))),
                       ),
@@ -102,7 +109,6 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
                         setState(() {
                           if (selectedDate == null) return;
                           dateSelected = selectedDate;
-                          print(dateSelected);
                           selectDate = formatDate(selectedDate).toString();
                         });
                       },
@@ -160,7 +166,7 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
                       .map((categoryModelObject) {
                     return DropdownMenuItem(
                       value: categoryModelObject,
-                      child: Text(categoryModelObject.name),
+                      child: Text(HelperFunction.firstLetterCapitalize(categoryModelObject.name)),
                     );
                   }).toList(),
                   onChanged: (newValue) {

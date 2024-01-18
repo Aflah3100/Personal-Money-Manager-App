@@ -22,12 +22,19 @@ class _ScreenCategoryState extends State<ScreenCategory>
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    Color labelColor =
+        theme.brightness == Brightness.light ? Colors.black : Colors.white;
+    Color unselectedLabelColor = theme.brightness == Brightness.light
+        ? Colors.grey
+        : Colors.grey.withOpacity(0.7);
+
     return Column(
       children: [
         TabBar(
             controller: _tabcontroller,
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
+            labelColor: labelColor,
+            unselectedLabelColor: unselectedLabelColor,
             tabs: const [
               Tab(
                 text: 'Income',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_money_management_app/db/functions/category/category_db.dart';
-import 'package:flutter_money_management_app/db/functions/transaction/transaction_db.dart';
 import 'package:flutter_money_management_app/screens/add_transactions/screen_add_transaction.dart';
 import 'package:flutter_money_management_app/screens/category/screen_category.dart';
 import 'package:flutter_money_management_app/screens/category/widgets/add_category_popup.dart';
@@ -18,7 +17,12 @@ class ScreenHome extends StatelessWidget {
     CategoryDb().refreshUi();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Money Manager'),
+        title: const Text(
+          'Personal Money Manager',
+          style: TextStyle(
+          fontSize: 22.0,
+          fontWeight: FontWeight.w500),
+        ),
         centerTitle: true,
       ),
       bottomNavigationBar: const MoneyManagerBottomNavigationBar(),
@@ -34,8 +38,6 @@ class ScreenHome extends StatelessWidget {
           } else {
             displayAddCategoryPopUp(context);
           }
-
-
         },
         child: const Icon(Icons.add),
       ),
