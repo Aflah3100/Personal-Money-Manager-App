@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_money_management_app/db/functions/category/category_db.dart';
-import 'package:flutter_money_management_app/db/models/category/category_model.dart';
+import 'package:flutter_money_management_app/db/functions/transaction/transaction_db.dart';
 import 'package:flutter_money_management_app/screens/add_transactions/screen_add_transaction.dart';
 import 'package:flutter_money_management_app/screens/category/screen_category.dart';
 import 'package:flutter_money_management_app/screens/category/widgets/add_category_popup.dart';
@@ -15,6 +15,7 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CategoryDb().refreshUi();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Money Manager'),
@@ -31,9 +32,6 @@ class ScreenHome extends StatelessWidget {
           if (currentIndexNotifier.value == 0) {
             Navigator.of(context).pushNamed(ScreenAddTransactions.routeName);
           } else {
-            // ignore: avoid_print
-            // print('Add Category');
-            // CategoryDb().addCategory(CategoryModel(id: DateTime.now().millisecondsSinceEpoch.toString(), name: 'Travel', type: CategoryType.expense));
             displayAddCategoryPopUp(context);
           }
 

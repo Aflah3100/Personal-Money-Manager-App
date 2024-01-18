@@ -18,7 +18,8 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
   final TextEditingController _purposeController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   CategoryType? selectedType;
-  String dateSelected = 'Select Date';
+  String selectDate = 'Select Date';
+  DateTime? dateSelected;
   CategoryModel? categorySelected;
 
   //form key
@@ -100,12 +101,14 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
                             lastDate: DateTime.now());
                         setState(() {
                           if (selectedDate == null) return;
-                          dateSelected = formatDate(selectedDate).toString();
+                          dateSelected = selectedDate;
+                          print(dateSelected);
+                          selectDate = formatDate(selectedDate).toString();
                         });
                       },
                       icon: const Icon(Icons.calendar_today)),
                   Text(
-                    dateSelected,
+                    selectDate,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -168,8 +171,12 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
 
               //Add Button
               FilledButton.icon(
-                  onPressed: () {
-                    addtoDatabase();
+                  onPressed: () async {
+                    if (await addtoDatabase()) {
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
+                      TransactionDb().refreshUi();
+                    }
                   },
                   icon: const Icon(Icons.check),
                   label: const Text('Submit')),
@@ -181,19 +188,21 @@ class _ScreenAddTransactionsState extends State<ScreenAddTransactions> {
   }
 
   //validate and add to database function
-  void addtoDatabase() {
+  Future<bool> addtoDatabase() async {
     if (_formkey.currentState!.validate()) {
       if (selectedType != null &&
-          dateSelected != 'Select Date' &&
+          dateSelected != null &&
           categorySelected != null) {
         TransactionModel transaction = TransactionModel(
             purpose: _purposeController.text,
             amount: double.parse(_amountController.text),
-            date: dateSelected,
+            date: dateSelected.toString(),
             categoryType: selectedType!,
             categoryModel: categorySelected!);
-        TransactionDb().addTransaction(transaction);
+        await TransactionDb().addTransaction(transaction);
+        return true;
       }
     }
+    return false;
   }
 }
